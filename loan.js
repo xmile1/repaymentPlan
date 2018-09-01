@@ -1,14 +1,20 @@
 
 function initialAnnuity(duration, nominalInterestRate, totalLoanAmount) {
+    // This formula resulted in 362.35 as opposed to 219.36 in the example 
+    // so i searched the internet for a different calculation that worked
+    // const rate = nominalInterestRate/100
+    // return rate * totalLoanAmount / (1 - Math.pow(1 + rate, -duration)).toFixed(2)
 
-    const rate = nominalInterestRate/100
-
-    return rate * totalLoanAmount / (1 - Math.pow(1 + rate, -duration)).toFixed(2)
-    
+    let monthly = nominalInterestRate / 12 / 100;
+    var length = 1 + monthly;
+    var start = 1;
+    for (i = 0; i < duration; i++) {
+        start = start * length
+    }
+    return (totalLoanAmount * monthly / (1 - (1 / start))).toFixed(2)
 }
 
 function annuity(principal, interest) {
-    // it might change at the end
     return principal + interest
 }
 
@@ -28,7 +34,6 @@ const getPrincipal = (annuity, interest, initialOutstandingPrincipal) => {
 }
 
 function getPaymentPlanForAMonth(borrowerPaymentAmount, startDate, dateIndex, initialOutstandingPrincipal, nominalInterestRate, isLastCase ) {
-
     const interest = getInterest(nominalInterestRate, initialOutstandingPrincipal)
     const principal = getPrincipal(borrowerPaymentAmount, interest, initialOutstandingPrincipal)
     borrowerPaymentAmount = isLastCase ? annuity(principal, interest) :  borrowerPaymentAmount
@@ -56,36 +61,3 @@ function getPaymentPlanSchedule(duration, nominalInterestRate, totalLoanAmount, 
 }
 
 console.log(getPaymentPlanSchedule(24, 5, 5000, "2018-01-01T00:00:01Z"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function loan() {
-//     var monthly = document.interest.rate.value / 12 / 100;
-//     var start = 1;
-//     var length = 1 + monthly;
-//     for (i = 0; i < document.interest.months.value; i++) {
-//         start = start * length
-//     }
-//     var payment = document.interest.payment.value = Number(document.interest.amount.value * monthly / (1 - (1 / start)))
-//     document.interest.payment.value = payment.toFixed(2);
-//     var totrepay = Number(document.interest.payment.value) * i;
-//     document.interest.totrepay.value = totrepay.toFixed(2);
-//     var totint = totrepay - document.interest.amount.value;
-//     document.interest.totint.value = totint.toFixed(2);
-// }

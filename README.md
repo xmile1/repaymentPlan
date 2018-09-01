@@ -7,10 +7,12 @@ STEP 1: - 1st commit
     - the formula
     -  the exception in annuity
     - correctness of cals
-    I am concerned about
+
+    I am mostly concerned about
     - the structure of output
     - which calculation step should come before this other
-    - writing small units for each fxnality
+    - writing small units for each functionality
+    - directly copying the formula in "Calculation Basics" into my code
 
     Running the program gives me
     - NaN for all expected results.
@@ -42,18 +44,22 @@ STEP 2: 2nd commit
 
     i ran the program with a debugger at each of these.. to see what is correct and what is not
 
-    ```
+    ```js
     const interest = getInterest(nominalInterestRate, initialOutstandingPrincipal)
+    debugger
     const principal = getPrincipal(borrowerPaymentAmount, interest, initialOutstandingPrincipal)
+    debugger
     borrowerPaymentAmount = borrowerPaymentAmount || principal + interest
+    debugger
+    ...
     ```
 
     interest was correct, i only needed to divide by 100 to change from cent
    I continued that way
-   I skipped annuity and hard coded  219.36 as the value.
+   I skipped annuity and hard coded 219.36 as the value.
    I made all result to 2 decimal places  `.toFixed(2)
 
-   at this point i got 
+   at this point i got:
 
 ```js
    [ { borrowerPaymentAmount: 219.36,
@@ -205,27 +211,27 @@ STEP 2: 2nd commit
 STEP 3:
 
     I focused on the last Month
-    - I need a codition to calculate the annuity differently for the last month
+    - I need a condition to calculate the annuity differently for the last month
     - i need a way to satisfy the condition in No 3 of the calculation basics that says for the last month if the calculated principal is higher than the previous outstanding principal dont use it, use the previous one
 
     I added a condition to calculate annuity as principal + interest if the computation was for the last month.
     i added an if statement to compare previous principal and current one to take a decision based on that
 
-    At this point Everything works as expected..... initialAnnuity formula is pain but i am now very motivated by what works......
+    At this point Everything works as expected..... initialAnnuity formula is a pain but i am now very motivated by what works and could even submit it this way stating the problem with the Annuity calculation......
 ```js
     function initialAnnuity(duration, nominalInterestRate, totalLoanAmount) {
         // does not change
         return 219.36
-        // return duration * nominalInterestRate * totalLoanAmount
-
         }
 ```
 
-I also notice that something might might be wrong, my last date is ` 2019-12-01T00:00:01.000Z` but theirs is `2020-01-01T00:00:00Z` but i dont care, i will only take a look when other more relevant issues are sorted and if i cannot sort it out, i will comment on the issue to the best of my knowlege.
+I also noticed that something might might be wrong, my last date is ` 2019-12-01T00:00:01.000Z` but theirs is `2020-01-01T00:00:00Z` but i dont care, i will only take a look when other more relevant issues are sorted and if i cannot sort it out, i will comment on the issue to the best of my knowlege.
 
 
 STEP: 4
 
-I translated the formula from the website just like you did and i at first i got 25000, then looking at the example on the site `http://financeformulas.net/Annuity_Payment_Formula.html` they were dividing the rate by 100 so i updated the formula and i got 362.35 but every other value was wrong as you rightly noticed to.
+I translated the formula from the website just like you did and at first i got 25000, then looking at the example on the site `http://financeformulas.net/Annuity_Payment_Formula.html` they were dividing the rate by 100 so i updated the formula and i got 362.35 which was wrong and made every other value wrong as you rightly noticed too.
 
 So i deleted that formula and used the one from the other website that was correct to replace it and it worked.
+
+
