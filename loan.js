@@ -19,23 +19,23 @@ function getInterest(nominalInterestRate, initialPrincipal) {
 }
 
 const getPrincipal = (annuity, interest, initialOutstandingPrincipal) => {
-
-    if (interest > initialOutstandingPrincipal) {
+    const principal = annuity - interest
+    if (principal > initialOutstandingPrincipal) {
         return initialOutstandingPrincipal
     }
-    return annuity - interest
+    return principal
 }
 
-function getPaymentPlanForAMonth(borrowerPaymentAmount, startDate, dateIndex, initialOutstandingPrincipal, nominalInterestRate ) {
-    
+function getPaymentPlanForAMonth(borrowerPaymentAmount, startDate, dateIndex, initialOutstandingPrincipal, nominalInterestRate, isLastCase ) {
+
     const interest = getInterest(nominalInterestRate, initialOutstandingPrincipal)
     const principal = getPrincipal(borrowerPaymentAmount, interest, initialOutstandingPrincipal)
-    borrowerPaymentAmount = borrowerPaymentAmount || principal + interest
+    borrowerPaymentAmount = isLastCase ? annuity(principal, interest) :  borrowerPaymentAmount
     const date = new Date(startDate)
     date.setMonth(date.getMonth() + dateIndex)
     return {
         borrowerPaymentAmount, // this is annuity
-        date: date, // this is the month
+        date,
         initialOutstandingPrincipal: initialOutstandingPrincipal.toFixed(2),
         interest: interest.toFixed(2),
         principal: principal.toFixed(2),
@@ -45,10 +45,10 @@ function getPaymentPlanForAMonth(borrowerPaymentAmount, startDate, dateIndex, in
 
 
 function getPaymentPlanSchedule(duration, nominalInterestRate, totalLoanAmount, startDate){
-    const annuity = initialAnnuity(duration, nominalInterestRate, totalLoanAmount)
+    let annuity = initialAnnuity(duration, nominalInterestRate, totalLoanAmount)
     let initialOutstandingPrincipal = totalLoanAmount
     return Array(duration).fill(2).map((e, index)=> {
-        const paymentPlan = getPaymentPlanForAMonth(annuity, startDate, index, initialOutstandingPrincipal, nominalInterestRate)
+        const paymentPlan = getPaymentPlanForAMonth(annuity, startDate, index, initialOutstandingPrincipal, nominalInterestRate, index === duration - 1)
         initialOutstandingPrincipal = initialOutstandingPrincipal - paymentPlan.principal
         return paymentPlan
     })
