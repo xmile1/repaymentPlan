@@ -1,9 +1,10 @@
 
 function initialAnnuity(duration, nominalInterestRate, totalLoanAmount) {
-    // does not change
-    return 219.36
-    // return duration * nominalInterestRate * totalLoanAmount
 
+    const rate = nominalInterestRate/100
+
+    return rate * totalLoanAmount / (1 - Math.pow(1 + rate, -duration)).toFixed(2)
+    
 }
 
 function annuity(principal, interest) {

@@ -223,3 +223,9 @@ STEP 3:
 
 I also notice that something might might be wrong, my last date is ` 2019-12-01T00:00:01.000Z` but theirs is `2020-01-01T00:00:00Z` but i dont care, i will only take a look when other more relevant issues are sorted and if i cannot sort it out, i will comment on the issue to the best of my knowlege.
 
+
+STEP: 4
+
+I translated the formula from the website just like you did and i at first i got 25000, then looking at the example on the site `http://financeformulas.net/Annuity_Payment_Formula.html` they were dividing the rate by 100 so i updated the formula and i got 362.35 but every other value was wrong as you rightly noticed to.
+
+So i deleted that formula and used the one from the other website that was correct to replace it and it worked.
